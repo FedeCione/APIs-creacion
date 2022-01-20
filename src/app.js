@@ -8,16 +8,19 @@ const app = express();
 const indexRouter = require('./routes/index');
 const moviesRoutes = require('./routes/moviesRoutes');
 const genresRoutes = require('./routes/genresRoutes');
-const apiRoutes = require('./routes/apiRouters/apiGenreRouter');
 
 //Aquí pueden colocar las rutas de las APIs
-
+const apiGenresRoutes = require('./routes/api/genresRoutes');
+const apiMoviesRoutes = require('./routes/api/moviesRoutes');
 
 // view engine setup
 app.set('views', path.resolve(__dirname, './views'));
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.resolve(__dirname, '../public')));
+
+//middleware
+app.use(express.json())
 
 //URL encode  - Para que nos pueda llegar la información desde el formulario al req.body
 app.use(express.urlencoded({ extended: false }));
@@ -28,7 +31,8 @@ app.use(methodOverride('_method'));
 app.use('/', indexRouter);
 app.use(moviesRoutes);
 app.use(genresRoutes);
-app.use('/api', apiRoutes);
+app.use(apiGenresRoutes);
+app.use(apiMoviesRoutes);
 
 
 //Activando el servidor desde express
